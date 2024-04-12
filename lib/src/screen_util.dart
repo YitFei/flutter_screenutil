@@ -4,7 +4,7 @@
  */
 
 import 'dart:io';
-import 'dart:math' show min, max;
+import 'dart:math' show max, min, pow, sqrt;
 import 'dart:ui' as ui show FlutterView;
 
 import 'package:flutter/widgets.dart';
@@ -229,7 +229,9 @@ class ScreenUtil {
   double radius(num r) => r * min(scaleWidth, scaleHeight);
 
   /// Adapt according to the both width and height
-  double diagonal(num d) => d * scaleHeight * scaleWidth;
+  double diagonal(num d) => d * sqrt(pow(scaleWidth, 2) + pow(scaleHeight, 2));
+
+  //double diagonal(num d) => d * scaleHeight * scaleWidth;
 
   /// Adapt according to the maximum value of scale width and scale height
   double diameter(num d) => d * max(scaleWidth, scaleHeight);
