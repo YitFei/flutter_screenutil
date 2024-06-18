@@ -243,6 +243,23 @@ class ScreenUtil {
   double setSp(num fontSize) =>
       fontSizeResolver?.call(fontSize, _instance) ?? fontSize * scaleText;
 
+  double setPx(num d) => d * scaleWidth;
+
+  double setFixedDesignRadius(num r) {
+    var designSize = _uiSize;
+    final actualScreenSizeInDP = _data.size;
+    final scaleWidth = (_data.orientation == Orientation.portrait
+            ? actualScreenSizeInDP.width
+            : actualScreenSizeInDP.height) /
+        designSize.width;
+    final scaleHeight = (_data.orientation == Orientation.portrait
+            ? actualScreenSizeInDP.height
+            : actualScreenSizeInDP.width) /
+        designSize.height;
+    final scaleSize = min(scaleWidth, scaleHeight);
+    return scaleSize;
+  }
+
   DeviceType deviceType() {
     DeviceType deviceType;
     switch (Platform.operatingSystem) {
