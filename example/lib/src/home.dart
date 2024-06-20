@@ -36,6 +36,11 @@ class HomePageScaffold extends StatelessWidget with SU {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             RSizedBox.square(dimension: 20),
+            Container(
+              width: 180.px,
+              height: 100,
+              color: Colors.purple,
+            ),
             Row(
               children: <Widget>[
                 // Using Extensions

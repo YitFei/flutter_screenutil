@@ -257,7 +257,7 @@ class ScreenUtil {
             : actualScreenSizeInDP.width) /
         designSize.height;
     final scaleSize = min(scaleWidth, scaleHeight);
-    return scaleSize;
+    return scaleSize * r;
   }
 
   DeviceType deviceType() {
