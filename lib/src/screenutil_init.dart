@@ -64,19 +64,20 @@ abstract class FontSizeResolvers {
 
 class ScreenUtilInit extends StatefulWidget {
   /// A helper widget that initializes [ScreenUtil]
-  const ScreenUtilInit({
-    Key? key,
-    this.builder,
-    this.child,
-    this.rebuildFactor = RebuildFactors.size,
-    this.designSize = ScreenUtil.defaultSize,
-    this.splitScreenMode = false,
-    this.minTextAdapt = false,
-    this.useInheritedMediaQuery = false,
-    this.ensureScreenSize = false,
-    this.responsiveWidgets,
-    this.fontSizeResolver = FontSizeResolvers.width,
-  }) : super(key: key);
+  const ScreenUtilInit(
+      {Key? key,
+      this.builder,
+      this.child,
+      this.rebuildFactor = RebuildFactors.size,
+      this.designSize = ScreenUtil.defaultSize,
+      this.splitScreenMode = false,
+      this.minTextAdapt = false,
+      this.useInheritedMediaQuery = false,
+      this.ensureScreenSize = false,
+      this.responsiveWidgets,
+      this.fontSizeResolver = FontSizeResolvers.width,
+      this.useDesignOrientation = false})
+      : super(key: key);
 
   final ScreenUtilInitBuilder? builder;
   final Widget? child;
@@ -86,6 +87,7 @@ class ScreenUtilInit extends StatefulWidget {
   final bool ensureScreenSize;
   final RebuildFactor rebuildFactor;
   final FontSizeResolver fontSizeResolver;
+  final bool useDesignOrientation;
 
   /// The [Size] of the device in the design draft, in dp
   final Size designSize;
@@ -173,12 +175,12 @@ class _ScreenUtilInitState extends State<ScreenUtilInit>
 
     if (!widget.ensureScreenSize) {
       ScreenUtil.configure(
-        data: mq,
-        designSize: widget.designSize,
-        splitScreenMode: widget.splitScreenMode,
-        minTextAdapt: widget.minTextAdapt,
-        fontSizeResolver: widget.fontSizeResolver,
-      );
+          data: mq,
+          designSize: widget.designSize,
+          splitScreenMode: widget.splitScreenMode,
+          minTextAdapt: widget.minTextAdapt,
+          fontSizeResolver: widget.fontSizeResolver,
+          useDesignOrientation: widget.useDesignOrientation);
 
       return widget.builder?.call(context, widget.child) ?? widget.child!;
     }
@@ -187,12 +189,12 @@ class _ScreenUtilInitState extends State<ScreenUtilInit>
       future: _screenSizeCompleter.future,
       builder: (c, snapshot) {
         ScreenUtil.configure(
-          data: mq,
-          designSize: widget.designSize,
-          splitScreenMode: widget.splitScreenMode,
-          minTextAdapt: widget.minTextAdapt,
-          fontSizeResolver: widget.fontSizeResolver,
-        );
+            data: mq,
+            designSize: widget.designSize,
+            splitScreenMode: widget.splitScreenMode,
+            minTextAdapt: widget.minTextAdapt,
+            fontSizeResolver: widget.fontSizeResolver,
+            useDesignOrientation: widget.useDesignOrientation);
 
         if (snapshot.connectionState == ConnectionState.done) {
           return widget.builder?.call(context, widget.child) ?? widget.child!;

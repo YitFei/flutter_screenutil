@@ -141,14 +141,15 @@ class ScreenUtil {
     bool splitScreenMode = false,
     bool minTextAdapt = false,
     FontSizeResolver? fontSizeResolver,
+    bool useDesignOrientation = false,
   }) {
     return configure(
-      data: MediaQuery.maybeOf(context),
-      designSize: designSize,
-      splitScreenMode: splitScreenMode,
-      minTextAdapt: minTextAdapt,
-      fontSizeResolver: fontSizeResolver,
-    );
+        data: MediaQuery.maybeOf(context),
+        designSize: designSize,
+        splitScreenMode: splitScreenMode,
+        minTextAdapt: minTextAdapt,
+        fontSizeResolver: fontSizeResolver,
+        useDesignOrientation: useDesignOrientation);
   }
 
   static Future<void> ensureScreenSizeAndInit(
@@ -157,15 +158,16 @@ class ScreenUtil {
     bool splitScreenMode = false,
     bool minTextAdapt = false,
     FontSizeResolver? fontSizeResolver,
+    bool useDesignOrientation = false,
   }) {
     return ScreenUtil.ensureScreenSize().then((_) {
       return configure(
-        data: MediaQuery.maybeOf(context),
-        designSize: designSize,
-        minTextAdapt: minTextAdapt,
-        splitScreenMode: splitScreenMode,
-        fontSizeResolver: fontSizeResolver,
-      );
+          data: MediaQuery.maybeOf(context),
+          designSize: designSize,
+          minTextAdapt: minTextAdapt,
+          splitScreenMode: splitScreenMode,
+          fontSizeResolver: fontSizeResolver,
+          useDesignOrientation: useDesignOrientation);
     });
   }
 
