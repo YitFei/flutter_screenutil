@@ -26,7 +26,7 @@ class ScreenUtil {
   late MediaQueryData _data;
   late bool _splitScreenMode;
   FontSizeResolver? fontSizeResolver;
-
+  late bool _useDesignOrientation;
   ScreenUtil._();
 
   factory ScreenUtil() => _instance;
@@ -93,13 +93,13 @@ class ScreenUtil {
     }
   }
 
-  static void configure({
-    MediaQueryData? data,
-    Size? designSize,
-    bool? splitScreenMode,
-    bool? minTextAdapt,
-    FontSizeResolver? fontSizeResolver,
-  }) {
+  static void configure(
+      {MediaQueryData? data,
+      Size? designSize,
+      bool? splitScreenMode,
+      bool? minTextAdapt,
+      FontSizeResolver? fontSizeResolver,
+      bool? useDesignOrientation}) {
     try {
       if (data != null)
         _instance._data = data;
@@ -127,7 +127,9 @@ class ScreenUtil {
       ..fontSizeResolver = fontSizeResolver ?? _instance.fontSizeResolver
       .._minTextAdapt = minTextAdapt ?? _instance._minTextAdapt
       .._splitScreenMode = splitScreenMode ?? _instance._splitScreenMode
-      .._orientation = orientation;
+      .._orientation = orientation
+      .._useDesignOrientation =
+          useDesignOrientation ?? _instance._useDesignOrientation;
 
     _instance._elementsToRebuild?.forEach((el) => el.markNeedsBuild());
   }
@@ -245,7 +247,11 @@ class ScreenUtil {
 
   double setPx(num d) => d * scaleWidth;
 
+  ///Radius according the scaling and orientation of design sizeß
   double setFixedDesignRadius(num r) {
+    if (_useDesignOrientation == false) {
+      return radius(r);
+    }
     var designSize = _uiSize;
     final actualScreenSizeInDP = _data.size;
     final scaleWidth = (_data.orientation == Orientation.portrait
