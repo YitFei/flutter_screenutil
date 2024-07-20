@@ -136,7 +136,7 @@ class ScreenUtil {
         designSize = Size(max(deviceSize.width, deviceSize.height),
             min(deviceSize.width, deviceSize.height));
       }
-    } else if (designSizeType == DesignSizeType.designSizeWithMinOrientation) {
+    } else if (designSizeType == DesignSizeType.designSizeWithOrientation) {
       if (orientation == Orientation.portrait) {
         designSize = Size(min(designSize.width, designSize.height),
             max(designSize.width, designSize.height));
