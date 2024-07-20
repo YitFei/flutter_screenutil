@@ -136,8 +136,7 @@ class ScreenUtil {
         designSize = Size(max(deviceSize.width, deviceSize.height),
             min(deviceSize.width, deviceSize.height));
       }
-    } else if (designSizeType ==
-        DesignSizeType.defaultDesignSizeWithOrientation) {
+    } else if (designSizeType == DesignSizeType.designSizeWithMinOrientation) {
       if (orientation == Orientation.portrait) {
         designSize = Size(min(designSize.width, designSize.height),
             max(designSize.width, designSize.height));
@@ -369,5 +368,5 @@ enum DeviceType { mobile, tablet, web, mac, windows, linux, fuchsia }
 enum DesignSizeType {
   defaultDesignSize,
   actualDeviceSize,
-  defaultDesignSizeWithOrientation,
+  designSizeWithOrientation,
 }
