@@ -27,6 +27,7 @@ class ScreenUtil {
   late bool _splitScreenMode;
   FontSizeResolver? fontSizeResolver;
   late bool _useDesignOrientation;
+  late DesignSizeType _designSizeType;
   ScreenUtil._();
 
   factory ScreenUtil() => _instance;
@@ -99,7 +100,8 @@ class ScreenUtil {
       bool? splitScreenMode,
       bool? minTextAdapt,
       FontSizeResolver? fontSizeResolver,
-      bool? useDesignOrientation}) {
+      bool? useDesignOrientation,
+      DesignSizeType? designSizeType}) {
     try {
       if (data != null)
         _instance._data = data;
@@ -123,22 +125,40 @@ class ScreenUtil {
             ? Orientation.landscape
             : Orientation.portrait);
 
-    if (orientation == Orientation.portrait) {
-      designSize = Size(min(deviceSize.width, deviceSize.height),
-          max(deviceSize.width, deviceSize.height));
-    } else {
-      designSize = Size(max(deviceSize.width, deviceSize.height),
-          min(deviceSize.width, deviceSize.height));
+    //* added by yif
+    //* Date 2024/07/20
+    // to fix some ui not adaptive while orientation was changed
+    if (designSizeType == DesignSizeType.actualDeviceSize) {
+      if (orientation == Orientation.portrait) {
+        designSize = Size(min(deviceSize.width, deviceSize.height),
+            max(deviceSize.width, deviceSize.height));
+      } else {
+        designSize = Size(max(deviceSize.width, deviceSize.height),
+            min(deviceSize.width, deviceSize.height));
+      }
+    } else if (designSizeType ==
+        DesignSizeType.defaultDesignSizeWithOrientation) {
+      if (orientation == Orientation.portrait) {
+        designSize = Size(min(designSize.width, designSize.height),
+            max(designSize.width, designSize.height));
+      } else {
+        designSize = Size(max(designSize.width, designSize.height),
+            min(designSize.width, designSize.height));
+      }
+    }
+
+    if (designSizeType != DesignSizeType.defaultDesignSize) {
+      _instance._uiSize = designSize;
     }
 
     _instance
-      .._uiSize = designSize
       ..fontSizeResolver = fontSizeResolver ?? _instance.fontSizeResolver
       .._minTextAdapt = minTextAdapt ?? _instance._minTextAdapt
       .._splitScreenMode = splitScreenMode ?? _instance._splitScreenMode
       .._orientation = orientation
       .._useDesignOrientation =
-          useDesignOrientation ?? _instance._useDesignOrientation;
+          useDesignOrientation ?? _instance._useDesignOrientation
+      .._designSizeType = designSizeType ?? _instance._designSizeType;
 
     _instance._elementsToRebuild?.forEach((el) => el.markNeedsBuild());
   }
@@ -345,3 +365,9 @@ extension on MediaQueryData? {
 }
 
 enum DeviceType { mobile, tablet, web, mac, windows, linux, fuchsia }
+
+enum DesignSizeType {
+  defaultDesignSize,
+  actualDeviceSize,
+  defaultDesignSizeWithOrientation,
+}
